@@ -1,0 +1,13 @@
+{% extends 'women/base.html' %}
+
+{% block content %}
+<!-- заголовок первого уровня -->
+<h1>{{post.title}}</h1>
+
+{% if post.photo %}
+<p><img class="img-article-left" src="{{post.photo.url}}"></p>
+{% endif %}
+
+<!-- фильтр тегов абзацев -->
+{{post.content|linebreaks}}
+{% endblock %}
