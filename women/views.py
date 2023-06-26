@@ -24,7 +24,19 @@ def about(request):
     return render(request, 'women/about.html', {'title': 'О сайте', 'menu': menu})
 
 def addpage(request): 
-    form = AddPostForm()
+    if request.method == 'POST':
+        #формирование формы с заполненными данными
+        form = AddPostForm(request.POST, request.FILES)
+        #проверка на корректность данных
+        if form.is_valid():
+            #если да, то отобразим очищенные данные
+            # print(form.cleaned_data)       
+            form.save() #все данные из формы автоматически занесены в бд
+            return redirect('home')
+                
+    else:
+        #формирование пустой формы
+        form = AddPostForm() 
     return render(request, 'women/addpage.html', {'form': form, 'menu': menu, 'title':'Добавление статьи'})
 
 def contact(request): 
@@ -42,7 +54,7 @@ def show_post(request, post_slug):
     context = {'post': post, #прочитанный пост
                'menu': menu, #главное меню
                'title': post.title, #заголовок статьи
-               'cat_selected': post.cat_slug,} #номер рубрики
+               'cat_selected': post.cat_id,} #номер рубрики
     
     return render(request, 'women/post.html', context=context)
 
